@@ -18,10 +18,10 @@ const BookingForm = ({isLoading, availableTimes, dispatchOnDateChanged, submitDa
 
     const formik = useFormik({
         initialValues: {
-            occasion: "",
+            occasion: "Birthday",
             date: new Date().toISOString().split('T')[0],
             amountDiners: "",
-            time: "",
+            time: availableTimes[0],
             fullname: "",
             phone: "",
             email: "",
@@ -87,14 +87,14 @@ const BookingForm = ({isLoading, availableTimes, dispatchOnDateChanged, submitDa
                             <p className="text-red-600 text-sm z-10 sm:absolute sm:-mt-5">{formik.errors.occasion} !</p>
                         )
                         : null}
-                    <select
+                    <select data-testid="booking-occasion-select"
                         className={`border-b-2 font-karla ${formik.touched.occasion && formik.errors.occasion ? "border-b-red-600" : ""} border-b-customGreen pl-2 w-full lg:text-lg focus:border-b-customYellow`}
 
                         {...formik.getFieldProps('occasion')}>
-                        <option>Birthday</option>
-                        <option>Wedding</option>
-                        <option>Romantic Dinner</option>
-                        <option>Anniversary</option>
+                        <option data-testid="booking-occasion-option">Birthday</option>
+                        <option data-testid="booking-occasion-option">Wedding</option>
+                        <option data-testid="booking-occasion-option">Romantic Dinner</option>
+                        <option data-testid="booking-occasion-option">Anniversary</option>
                     </select>
 
                     <div className="w-full relative mt-4 sm:mt-0">
@@ -105,6 +105,7 @@ const BookingForm = ({isLoading, availableTimes, dispatchOnDateChanged, submitDa
                         <input
                             className={`border-b-2 font-karla ${formik.touched.date && formik.errors.date ? "border-b-red-600" : ""} border-b-customGreen pl-3 w-full focus:border-b-customYellow lg:text-lg `}
                             type="date"
+                            data-testid="booking-date-option"
                             onChange={dateChanged}
                             name="date"
                             value={formik.values.date}
@@ -117,12 +118,13 @@ const BookingForm = ({isLoading, availableTimes, dispatchOnDateChanged, submitDa
 
                 <div className="flex flex-col gap-0 sm:flex-row sm:gap-10">
                     {formik.touched.amountDiners && formik.errors.amountDiners ? (
-                            <p className="text-red-600 text-sm z-10 sm:absolute sm:-mt-5 lg:absolute">{formik.errors.amountDiners} !</p>
+                            <p data-testid="error-message" className="text-red-600 text-sm z-10 sm:absolute sm:-mt-5 lg:absolute">{formik.errors.amountDiners} !</p>
                         )
                         : null}
                     <input
                         type="number"
-                        placeholder="Amount of Diners"
+                        data-testid="booking-number-guests"
+                        placeholder="Number of Diners"
                         className={`border-0 border-b-2  font-karla ${formik.touched.amountDiners && formik.errors.amountDiners ? "border-b-red-600" : ""} border-b-customGreen pl-3 w-full lg:text-lg focus:border-b-customYellow`}
                         {...formik.getFieldProps('amountDiners')}
                     />
@@ -132,11 +134,11 @@ const BookingForm = ({isLoading, availableTimes, dispatchOnDateChanged, submitDa
                                 <p className=" text-red-600 text-sm z-10 sm:absolute sm:-mt-6 lg:absolute">{formik.errors.time} !</p>
                             )
                             : null}
-                        <select
+                        <select data-testid="booking-time-select"
                             className={`border-b-2 font-karla ${formik.touched.time && formik.errors.time ? "border-b-red-600" : ""} border-b-customGreen pl-3 w-full focus:border-b-customYellow lg:text-lg `}
                             {...formik.getFieldProps('time')}>
                             {availableTimes.map(times =>
-                                <option key={times}>
+                                <option data-testid="booking-time-option" key={times}>
                                     {times}
                                 </option>
                             )}
@@ -194,6 +196,7 @@ const BookingForm = ({isLoading, availableTimes, dispatchOnDateChanged, submitDa
                     </div>
                 </div>
                 <button type="submit"
+                        role="button"
                         className="font-karla bg-customGreen rounded-3xl text-customCardBg mt-4 w-52 p-2 self-center lg:text-lg hover:text-customGreen hover:bg-customYellow">
 
                     {isLoading ? (
